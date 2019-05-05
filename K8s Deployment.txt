@@ -1,0 +1,35 @@
+###########################
+Considering K8S cluster already installed and running with following configurations..
+k8s-masternode: 172.20.10.14/28
+k8s-workernode1:172.20.10.8/28
+k8s-workernode2:172.20.10.9/28
+###########################
+
+1)
+###Running our my-app Docker image on K8S with two replicas/pods###
+
+kubectl run my-app --image=sagarjavia87/hello-world:2.0.0 --replicas=2 --port=80
+
+###To get Deployment Details###
+kubectl get deploy -o wide
+
+kubectl get pods -o wide
+
+
+2)
+#######Exposing our deployment as a service######
+
+kubectl expose deployment my-app --port=8080 --target-port=80 --type=LoadBalancer
+
+#########To know which random port our app deployed as service######
+
+kubectl get service
+
+3)
+######small test using curl command from master node#######
+
+curl http://k8s-workernode1:32011     (i.e  where "32011" is a random port we get while creating our deployment as a service)
+curl http://k8s-workernode2:32011
+
+
+
